@@ -5,7 +5,8 @@
 
         <variable
                 name="item"
-                type="String"/>
+                type="com.github.wkw.magicadapter.User"/>
+
         <variable
                 name="presenter"
                 type="android.view.View.OnClickListener"/>
@@ -13,7 +14,7 @@
     </data>
 
     <TextView
-            android:text="@{item}"
+            android:text="@{item.name}"
             android:onClick="@{presenter}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

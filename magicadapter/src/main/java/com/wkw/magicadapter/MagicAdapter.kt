@@ -5,12 +5,9 @@ import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.github.wkw.magicadapter.BR
 
 /**
- * Created by GoGo on 2018/11/7.
- * Email zjwkw1992@163.com
- * GitHub https://github.com/zj-wukewei
+ * @author GoGo on 2018-11-07.
  */
 class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
 
@@ -30,6 +27,11 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
 
     override fun onBindViewHolder(holder: BindingViewHolder<ViewDataBinding>, postion: Int) {
         val data = datas[postion]
+        val magicItem = items[getItemViewType(postion)]
+        val handlers = magicItem.handlers()
+        for ((id, handle) in handlers) {
+            holder.binding.setVariable(id, handle)
+        }
         holder.binding.setVariable(BR.item, data)
 
         holder.binding.executePendingBindings()
@@ -43,7 +45,7 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
         return getItemConfig(position)
     }
 
-   private fun getItemConfig(position: Int): Int {
+    private fun getItemConfig(position: Int): Int {
         if (items.isEmpty()) {
             throw RuntimeException("item must config")
         }

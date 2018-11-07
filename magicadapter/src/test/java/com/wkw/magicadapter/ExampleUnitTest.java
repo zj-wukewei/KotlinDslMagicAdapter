@@ -1,4 +1,4 @@
-package com.github.wkw.magicadapter;
+package com.wkw.magicadapter;
 
 import org.junit.Test;
 
