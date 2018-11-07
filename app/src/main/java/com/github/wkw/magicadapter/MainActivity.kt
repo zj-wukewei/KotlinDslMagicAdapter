@@ -1,39 +1,41 @@
 package com.github.wkw.magicadapter
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu
-import android.view.MenuItem
-
-import kotlinx.android.synthetic.main.activity_main.*
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import com.github.wkw.magicadapter.databinding.ActivityMainBinding
+import com.github.wkw.magicadapter.databinding.ItemStringBinding
+import com.wkw.magicadapter.MagicAdapter
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var   binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val mAdapter =  MagicAdapter.repositoryAdapter()
+            .addItemDsl<String> {
+                resId = R.layout.item_string
+                dataMeet = { d, p -> d is String}
+            }
+           .build()
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        binding.rv.run {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
         }
+
+        val data = ArrayList<Any>()
+        data.add("11111")
+        data.add("22222")
+        data.add("33333")
+        data.add("44444")
+
+        mAdapter.submitList(data)
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 }
