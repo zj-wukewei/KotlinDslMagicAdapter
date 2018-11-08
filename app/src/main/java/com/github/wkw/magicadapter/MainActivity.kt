@@ -20,21 +20,21 @@ class MainActivity : AppCompatActivity() {
         val mAdapter = MagicAdapter.repositoryAdapter()
             .addItemDsl<String> {
                 resId = R.layout.item_string
-                dataMeet = { d, _ -> d is String }
-                itemId(BR.user) { User(1234567, "wwkwkwkwk") }
+                dataMatch = { d, _ -> d is String }
+                itemId(BR.user) { User(1234567, "GoGo") }
                 handler(BR.presenter, View.OnClickListener {
-                    Toast.makeText(this@MainActivity, "aaaaa", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, R.string.item_string, Toast.LENGTH_LONG).show()
                 })
-                areItemsTheSame = { o, n -> o == n }
+                areItems = { o, n -> o == n }
             }
             .addItemDsl<User> {
                 resId = R.layout.item_user
-                dataMeet = { d, _ -> d is User }
-                itemId(BR.user) { User(1234567, "wwkwkwkwk") }
+                dataMatch = { d, _ -> d is User }
                 handler(BR.presenter, View.OnClickListener {
-                    Toast.makeText(this@MainActivity, "bbbbbb", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, R.string.item_user, Toast.LENGTH_LONG).show()
                 })
-                areItemsTheSame = { o, n -> o.id == n.id }
+                areItems = { o, n -> o.id == n.id }
+                areContents = { o, n -> o.id == n.id && o.name == n.name}
             }
             .build()
 
@@ -49,29 +49,28 @@ class MainActivity : AppCompatActivity() {
         data.add("33333")
         data.add("44444")
         data.add("44444")
-        data.add(User(111, "aaaaa"))
-        data.add(User(222, "bbbbb"))
-        data.add(User(333, "ccccc"))
-        data.add(User(444, "ddddd"))
+        data.add(User(111, "张三"))
+        data.add(User(222, "李四"))
+        data.add(User(333, "王五"))
+        data.add(User(444, "桃六"))
 
         mAdapter.submitList(data)
 
 
-
         binding.rv.postDelayed({
-            val data = ArrayList<Any>()
-            data.add("11111")
-            data.add("22222")
-            data.add(User(111, "aabbbbbaaa"))
-            data.add("33333")
-            data.add("44444")
-            data.add(User(333, "ccccc"))
-            data.add(User(222, "bbbbb"))
-            data.add("44444")
-            data.add(User(444, "ddddd"))
+            val newData = ArrayList<Any>()
+            newData.add("11111")
+            newData.add("22222")
+            newData.add(User(111, "张三"))
+            newData.add("33333")
+            newData.add("44444")
+            newData.add(User(333, "王五"))
+            newData.add(User(222, "李四"))
+            newData.add("44444")
+            newData.add(User(444, "桃六"))
 
 
-            mAdapter.submitList(data)
+            mAdapter.submitList(newData)
         }, 5000)
     }
 

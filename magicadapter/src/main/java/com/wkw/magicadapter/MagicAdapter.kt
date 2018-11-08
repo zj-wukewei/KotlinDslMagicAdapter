@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.util.SparseIntArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -33,11 +34,12 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
         val data = datas[postion]
         val magicItem = items[positionToTypeMap.get(postion)]
 
+        holder.binding.setVariable(BR.item, data)
+
         val handlers = magicItem.handlers()
         for ((id, handle) in handlers) {
             holder.binding.setVariable(id, handle)
         }
-        holder.binding.setVariable(BR.item, data)
 
         val itemIds = magicItem.itemIds()
         for ((idGet, setter) in itemIds) {
@@ -53,12 +55,12 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
 
 
     override fun getItemViewType(position: Int): Int {
-        return getItemConfig(position)
+        return positionToItemsIndex(position)
     }
 
-    private fun getItemConfig(position: Int): Int {
+    private fun positionToItemsIndex(position: Int): Int {
         if (items.isEmpty()) {
-            throw RuntimeException("item must config")
+            throw RuntimeException("item must add")
         }
         items.forEachIndexed { index, magicItem ->
             if (magicItem.getItemViewType(datas[position], position)) {
@@ -78,9 +80,10 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
     }
 
 
-
-    private inner class DiffCallback(private var mOldData: List<Any>,
-                                     private var mNewData: List<Any>) : DiffUtil.Callback() {
+    private inner class DiffCallback(
+        private var mOldData: List<Any>,
+        private var mNewData: List<Any>
+    ) : DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             val old = mOldData[oldItemPosition]
             val new = mNewData[newItemPosition]
@@ -90,7 +93,7 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
             }
             val magicItem = items[positionToTypeMap.get(oldItemPosition)]
 
-            return magicItem.areItems(old, new)
+            return magicItem.areItemsTheSame(old, new)
 
         }
 
@@ -107,11 +110,10 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
             }
             val magicItem = items[positionToTypeMap.get(oldItemPosition)]
 
-            return magicItem.areContents(old, new)
+            return magicItem.areContentsTheSame(old, new)
         }
 
     }
-
 
 
     companion object {
@@ -126,12 +128,8 @@ class Builder internal constructor() {
 
     internal val items: MutableList<MagicItem<Any>> = ArrayList()
 
-    fun <D> addItem(create: () -> MagicItem<Any>): Builder {
-        items.add(create())
-        return this
-    }
 
-    fun <D: Any> addItemDsl(create: MagicDslItem<D>.() -> Unit): Builder {
+    fun <D : Any> addItemDsl(create: MagicDslItem<D>.() -> Unit): Builder {
         val acrobatDSL = MagicDslItem<D>()
         acrobatDSL.create()
         items.add(acrobatDSL.build() as MagicItem<Any>)
