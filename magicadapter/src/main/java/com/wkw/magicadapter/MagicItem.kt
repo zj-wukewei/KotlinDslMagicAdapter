@@ -14,7 +14,7 @@ abstract class MagicItem<D> {
 
     abstract fun areItems(o: D, n: D): Boolean
 
-    abstract fun areContents(o: D, n: D): Boolean
+    abstract fun areContents(o: Any, n: Any): Boolean
 
     abstract fun handlers(): ArrayList<Pair<Int, Any?>>
 
@@ -29,7 +29,7 @@ class MagicDslItem<D> constructor(
 ) {
 
     var areItemsTheSame: ((o: D, n: D) -> Boolean)? = null
-    var areContentsTheSame: ((o: D, n: D) -> Boolean)? = null
+    var areContentsTheSame: ((o: Any, n: Any) -> Boolean)? = null
 
     fun handler(handlerId: Int, handler: Any): MagicDslItem<D> {
         handlers.add(handlerId to handler)
@@ -43,7 +43,7 @@ class MagicDslItem<D> constructor(
 
     internal fun build(): MagicItem<D> {
         return object : MagicItem<D>() {
-            override fun areContents(o: D, n: D): Boolean {
+            override fun areContents(o: Any, n: Any): Boolean {
                 areContentsTheSame?.let {
                     return it.invoke(o, n)
                 }
