@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                 handler(BR.presenter, View.OnClickListener {
                     Toast.makeText(this@MainActivity, R.string.item_string, Toast.LENGTH_LONG).show()
                 })
-                areItems = { o, n -> o == n }
+                areItemsTheSame = { o, n -> o == n }
             }
             .addItemDsl<User> {
                 resId = R.layout.item_user
@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
                 handler(BR.presenter, View.OnClickListener {
                     Toast.makeText(this@MainActivity, R.string.item_user, Toast.LENGTH_LONG).show()
                 })
-                areItems = { o, n -> o.id == n.id }
-                areContents = { o, n -> o.id == n.id && o.name == n.name}
+                areItemsTheSame = { o, n -> o.id == n.id }
+                areContentsTheSame = { o, n -> o.id == n.id && o.name == n.name}
             }
             .build()
 

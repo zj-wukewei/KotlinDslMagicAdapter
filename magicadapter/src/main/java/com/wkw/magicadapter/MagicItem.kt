@@ -14,7 +14,7 @@ abstract class MagicItem<D> {
 
     abstract fun areItems(o: D, n: D): Boolean
 
-    abstract fun areContents(o: Any, n: Any): Boolean
+    abstract fun areContents(o: D, n: D): Boolean
 
     abstract fun handlers(): ArrayList<Pair<Int, Any?>>
 
@@ -23,13 +23,13 @@ abstract class MagicItem<D> {
 
 class MagicDslItem<D> constructor(
     @LayoutRes var resId: Int = -1,
-    var dataMeet: (d: Any, pos: Int) -> Boolean = { _: Any, _: Int -> false },
+    var dataMatch: (d: Any, pos: Int) -> Boolean = { _: Any, _: Int -> false },
     private val itemIds: ArrayList<Pair<(D) -> Int, (D) -> Any?>> = ArrayList(),
     private val handlers: ArrayList<Pair<Int, Any?>> = ArrayList()
 ) {
 
     var areItemsTheSame: ((o: D, n: D) -> Boolean)? = null
-    var areContentsTheSame: ((o: Any, n: Any) -> Boolean)? = null
+    var areContentsTheSame: ((o: D, n: D) -> Boolean)? = null
 
     fun handler(handlerId: Int, handler: Any): MagicDslItem<D> {
         handlers.add(handlerId to handler)
@@ -43,7 +43,7 @@ class MagicDslItem<D> constructor(
 
     internal fun build(): MagicItem<D> {
         return object : MagicItem<D>() {
-            override fun areContents(o: Any, n: Any): Boolean {
+            override fun areContents(o: D, n: D): Boolean {
                 areContentsTheSame?.let {
                     return it.invoke(o, n)
                 }
@@ -61,7 +61,7 @@ class MagicDslItem<D> constructor(
 
             override fun handlers() = handlers
 
-            override fun getItemViewType(data: Any, position: Int) = dataMeet(data, position)
+            override fun getItemViewType(data: Any, position: Int) = dataMatch(data, position)
 
             override fun layoutId() = resId
 

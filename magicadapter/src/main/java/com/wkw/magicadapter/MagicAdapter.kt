@@ -93,7 +93,7 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
             }
             val magicItem = items[positionToTypeMap.get(oldItemPosition)]
 
-            return magicItem.areItemsTheSame(old, new)
+            return magicItem.areItems(old, new)
 
         }
 
@@ -110,7 +110,7 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
             }
             val magicItem = items[positionToTypeMap.get(oldItemPosition)]
 
-            return magicItem.areContentsTheSame(old, new)
+            return magicItem.areContents(old, new)
         }
 
     }
