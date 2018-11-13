@@ -62,6 +62,11 @@ class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<Vi
         if (items.isEmpty()) {
             throw RuntimeException("item must add")
         }
+
+        if (items.size == 1) {
+            return 0
+        }
+
         items.forEachIndexed { index, magicItem ->
             if (magicItem.getItemViewType(datas[position], position)) {
                 positionToTypeMap.put(position, index)
