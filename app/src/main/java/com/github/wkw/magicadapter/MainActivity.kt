@@ -1,9 +1,9 @@
 package com.github.wkw.magicadapter
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.rv.run {
             adapter = mAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@MainActivity)
         }
 
         val data = ArrayList<Any>()

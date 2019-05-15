@@ -1,6 +1,6 @@
 package com.wkw.magicadapter
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import java.util.ArrayList
 
 /**

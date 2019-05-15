@@ -1,18 +1,16 @@
 package com.wkw.magicadapter
 
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.util.SparseIntArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 
 /**
  * @author GoGo on 2018-11-07.
  */
-class MagicAdapter(builder: Builder) : RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
+class MagicAdapter(builder: Builder) : androidx.recyclerview.widget.RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
 
     private var datas: MutableList<Any> = ArrayList()
 
