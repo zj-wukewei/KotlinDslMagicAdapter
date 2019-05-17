@@ -14,7 +14,7 @@ class MagicAdapter(builder: Builder) : androidx.recyclerview.widget.RecyclerView
 
     private var datas: MutableList<Any> = ArrayList()
 
-    internal val items: MutableList<MagicItem<Any>> = builder.items
+    internal val items: MutableList<MagicItem<Any, ViewDataBinding>> = builder.items
 
     private val positionToTypeMap = SparseIntArray()
 
@@ -44,6 +44,7 @@ class MagicAdapter(builder: Builder) : androidx.recyclerview.widget.RecyclerView
             val itemVariable = idGet(data)
             holder.binding.setVariable(itemVariable, setter(data))
         }
+        magicItem.callBackUnit(data, holder.binding, postion)
 
         holder.binding.executePendingBindings()
     }
@@ -129,13 +130,13 @@ class MagicAdapter(builder: Builder) : androidx.recyclerview.widget.RecyclerView
 
 class Builder internal constructor() {
 
-    internal val items: MutableList<MagicItem<Any>> = ArrayList()
+    internal val items: MutableList<MagicItem<Any, ViewDataBinding>> = ArrayList()
 
 
-    fun <D : Any> addItemDsl(create: MagicDslItem<D>.() -> Unit): Builder {
-        val acrobatDSL = MagicDslItem<D>()
+    fun <D : Any, DB: ViewDataBinding> addItemDsl(create: MagicDslItem<D, DB>.() -> Unit): Builder {
+        val acrobatDSL = MagicDslItem<D, DB>()
         acrobatDSL.create()
-        items.add(acrobatDSL.build() as MagicItem<Any>)
+        items.add(acrobatDSL.build() as MagicItem<Any, ViewDataBinding>)
         return this
     }
 
